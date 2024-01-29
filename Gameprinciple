@@ -1,0 +1,159 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <random>
+#include <ctime>
+
+// Function to draw random letters
+std::string drawLetters(int numVowels) {
+    std::string vowels = "AEIOU";
+    std::string consonants = "BCDFGHJKLMNPQRSTVWXYZ";
+    std::string letters;
+
+    // Generate random vowels
+    for (int i = 0; i < numVowels; ++i) {
+        letters += vowels[rand() % vowels.size()];
+    }
+
+    // Generate random consonants
+    for (int i = 0; i < 10 - numVowels; ++i) {
+        letters += consonants[rand() % consonants.size()];
+    }
+
+    // Shuffle the letters
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(letters.begin(), letters.end(), g);
+
+    return letters;
+}
+
+// Function to find the longest word possible
+std::string findLongestWord(const std::string& drawnLetters, const std::vector<std::string>& dictionary) {
+    std::string longestWord;
+    for (int i = 10; i >= 2; --i) {  // Check combinations from 10 letters down to 2 letters
+        std::vector<std::string> combinations;
+        std::sort(drawnLetters.begin(), drawnLetters.end());
+        do {
+            for (int j = 0; j <= drawnLetters.size() - i; ++j) {
+                combinations.push_back(drawnLetters.substr(j, i));
+            }
+        } while (std::next_permutation(drawnLetters.begin(), drawnLetters.end()));
+
+        for (const auto& combination : combinations) {
+            if (std::find(dictionary.begin(), dictionary.end(), combination) != dictionary.end()) {
+                longestWord = combination;
+                break; // Found a valid word, no need to continue searching
+            }
+        }
+        if (!longestWord.empty()) {
+            break; // Found the longest word, stop searching
+        }
+    }
+    return longestWord.empty() ? "No valid words found" : longestWord;
+}
+
+int main() {
+    srand(time(0)); // Seed for randomization
+
+    // Sample dictionary
+    std::vector<std::string> dictionary = {"PAR", "CAP", "CAR", "RAP", "PAC"};
+
+    int player1Vowels, player2Vowels;
+
+    // Input number of vowels chosen by Player 1 and Player 2
+    std::cout << "Player 1: Choose the number of vowels (0-10): ";
+    std::cin >> player1Vowels;
+    std::cout << "Player 2: Choose the number of vowels (0-10): ";
+    std::cin >> player2Vowels;
+
+    // Draw letters
+    std::string drawnLetters = drawLetters(player1Vowels + player2Vowels);
+    std::cout << "Drawn letters: " << drawnLetters << std::endl;
+
+    // Find longest word
+    std::string longestWord = findLongestWord(drawnLetters, dictionary);
+    std::cout << "Longest word possible: " << longestWord << std::endl;
+
+    return 0;
+}#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <random>
+#include <ctime>
+
+// Function to draw random letters
+std::string drawLetters(int numVowels) {
+    std::string vowels = "AEIOU";
+    std::string consonants = "BCDFGHJKLMNPQRSTVWXYZ";
+    std::string letters;
+
+    // Generate random vowels
+    for (int i = 0; i < numVowels; ++i) {
+        letters += vowels[rand() % vowels.size()];
+    }
+
+    // Generate random consonants
+    for (int i = 0; i < 10 - numVowels; ++i) {
+        letters += consonants[rand() % consonants.size()];
+    }
+
+    // Shuffle the letters
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(letters.begin(), letters.end(), g);
+
+    return letters;
+}
+
+// Function to find the longest word possible
+std::string findLongestWord(const std::string& drawnLetters, const std::vector<std::string>& dictionary) {
+    std::string longestWord;
+    for (int i = 10; i >= 2; --i) {  // Check combinations from 10 letters down to 2 letters
+        std::vector<std::string> combinations;
+        std::sort(drawnLetters.begin(), drawnLetters.end());
+        do {
+            for (int j = 0; j <= drawnLetters.size() - i; ++j) {
+                combinations.push_back(drawnLetters.substr(j, i));
+            }
+        } while (std::next_permutation(drawnLetters.begin(), drawnLetters.end()));
+
+        for (const auto& combination : combinations) {
+            if (std::find(dictionary.begin(), dictionary.end(), combination) != dictionary.end()) {
+                longestWord = combination;
+                break; // Found a valid word, no need to continue searching
+            }
+        }
+        if (!longestWord.empty()) {
+            break; // Found the longest word, stop searching
+        }
+    }
+    return longestWord.empty() ? "No valid words found" : longestWord;
+}
+
+int main() {
+    srand(time(0)); // Seed for randomization
+
+    // Sample dictionary
+    std::vector<std::string> dictionary = {"PAR", "CAP", "CAR", "RAP", "PAC"};
+
+    int player1Vowels, player2Vowels;
+
+    // Input number of vowels chosen by Player 1 and Player 2
+    std::cout << "Player 1: Choose the number of vowels (0-10): ";
+    std::cin >> player1Vowels;
+    std::cout << "Player 2: Choose the number of vowels (0-10): ";
+    std::cin >> player2Vowels;
+
+    // Draw letters
+    std::string drawnLetters = drawLetters(player1Vowels + player2Vowels);
+    std::cout << "Drawn letters: " << drawnLetters << std::endl;
+
+    // Find longest word
+    std::string longestWord = findLongestWord(drawnLetters, dictionary);
+    std::cout << "Longest word possible: " << longestWord << std::endl;
+
+    return 0;
+}
